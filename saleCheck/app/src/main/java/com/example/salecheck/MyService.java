@@ -152,7 +152,7 @@ public class MyService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        throw new UnsupportedOperationException("Not yet 어쩌구저쩌구");
+        throw new UnsupportedOperationException("어쩌구저쩌구");
     }
 
 
