@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Window;
 import android.widget.ImageView;
 
 
@@ -18,6 +19,7 @@ public class Loding extends AppCompatActivity {
     Context context =this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
         ImageView backgroundimg = (ImageView)findViewById(R.id.backgroundimg);

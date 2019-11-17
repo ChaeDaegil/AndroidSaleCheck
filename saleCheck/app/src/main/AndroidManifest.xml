@@ -19,7 +19,9 @@
             android:name="com.example.salecheck.MyService"
             android:enabled="true">
         </service>
-        <activity android:name=".Loding">
+        <activity
+            android:name=".Loding"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".openList">
+        <activity
+            android:name=".openList"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
