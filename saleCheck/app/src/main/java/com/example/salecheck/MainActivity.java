@@ -49,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
     String nowMoney="";
     String itemName ="";
     String picture= "";
-    Button insertbtn=null;
-    Button itemListbtn=null;
     Intent intent;
     Intent getIntentUrl=null;//수신 받기위한 intent
     Intent foregroundServiceIntent;//서비스 시작을 위한 intent
@@ -63,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        insertbtn = (Button)findViewById(R.id.insertbtn);//추가버튼 불러오기
-        itemListbtn = (Button)findViewById(R.id.listbtn);
         context = this;
 
         // 웹뷰 셋팅
@@ -94,23 +90,6 @@ public class MainActivity extends AppCompatActivity {
         memoDbHelper = new MemoDbHelper(this);
         SQLiteDatabase db = memoDbHelper.getWritableDatabase();
 
-
-        //추가버튼
-        insertbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
-                jsoupAsyncTask.execute();
-            }
-        });
-
-        itemListbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent = new Intent(MainActivity.this ,openList.class);
-                startActivity(intent);
-            }
-        });
 
     }
 /******
@@ -270,10 +249,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_insert :
-
+                JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
+                jsoupAsyncTask.execute();
+                return false;
             case R.id.action_list :
                 intent = new Intent(MainActivity.this ,openList.class);
                 startActivity(intent);
+                return false;
             default :
                 return super.onOptionsItemSelected(item) ;
         }
