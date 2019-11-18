@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
+
         implements OnPersonItemClickListener {
+    Bitmap bitmap;
     LinkedList<ItemList> items = new LinkedList<ItemList>();
 
     OnPersonItemClickListener listener;
@@ -37,10 +39,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         ItemList item = items.get(position);
-        Bitmap bitmap = getBitmap(item.picture);
-        System.out.println(item.picture);
-        System.out.println(bitmap);
-        viewHolder.setItem(item,bitmap);
+        viewHolder.setItem(item);
     }
 
     @Override
@@ -84,30 +83,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
         }
     }
 
-    private Bitmap getBitmap(String url) {
-        URL imgUrl = null;
-        HttpURLConnection connection = null;
-        InputStream is = null;
-        Bitmap retBitmap = null;
-        try{
-            imgUrl = new URL(url);
-            connection = (HttpURLConnection) imgUrl.openConnection();
-            connection.setDoInput(true); //url로 input받는 flag 허용
-            connection.connect(); //연결
-            is = connection.getInputStream();
-            retBitmap = BitmapFactory.decodeStream(is);
-        }catch(Exception e) {
-            e.printStackTrace();
-            return null; }
-        finally {
-            if(connection!=null) {
-                connection.disconnect();
-            }
-            return retBitmap;
-        }
-    }
-
-
     static class ViewHolder extends RecyclerView.ViewHolder{
         TextView itemname;
         TextView itemMoney;
@@ -135,12 +110,44 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>
             });
         }
 
-
-        public void setItem(ItemList item,Bitmap bitmap){
-                System.out.println(item.itemName+" "+itemMoney+" "+item.picture);
+        public Bitmap rebit(){
+            bitmap;
+            return bitmap;
+        }
+        public void setItem(final ItemList item){
                 itemname.setText(item.itemName);
                 itemMoney.setText(item.getMoney());
-                //itemImage.setImageBitmap(bitmap);
+            Thread mThread = new Thread() {
+
+                @Override
+                public void run() {
+
+                    try {
+                        URL url = new URL(item.picture); // URL 주소를 이용해서 URL 객체 생성
+
+                        //  아래 코드는 웹에서 이미지를 가져온 뒤
+                        //  이미지 뷰에 지정할 Bitmap을 생성하는 과정
+
+                        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
+
+                        InputStream is = conn.getInputStream();
+                        bitmap = BitmapFactory.decodeStream(is);
+
+                    } catch(IOException ex) {
+
+                    }
+                }
+            };
+
+            mThread.start(); // 웹에서 이미지를 가져오는 작업 스레드 실행.
+            try {
+                mThread.join();
+                itemImage.setImageBitmap(bitmap);
+            } catch (InterruptedException e) {
+
+            }
 
         }
 
